@@ -68,23 +68,20 @@ export default function LandingPage() {
       const status = res.users.filter((user) => user.statesLogin === 1);
       setlistUserOnline(status);
     });
-    noteApi
-      .getLastestNotes()
-      .then((res) => {
-        let notes = [...res.notes.slice(-10)];
-        notes.forEach(async (note, index) => {
-          const user = await userApi.profile(note.idUser);
-          notes[index].username = user.user.name;
-        });
-        return notes;
-      })
-      .then((notes) => setNewNotes(notes));
+    noteApi.getLastestNotes().then(async (res) => {
+      let notes = [...res.public_note.slice(-10)];
+      setNewNotes(notes);
+    });
   }, []);
   useEffect(() => {
     setTimeout(() => {
-      noteApi.getNumberNote().then((data) => {
-        setUserMostNote(data.data);
-      });
+      noteApi
+        .getNumberNote()
+        .then((data) => {
+          console.log({ data });
+          setUserMostNote(data.data);
+        })
+        .catch((err) => console.log({ err }));
     }, 5000);
   }, [listUserMostNote]);
 
@@ -190,8 +187,8 @@ export default function LandingPage() {
                       <div className={cx("index")}>{index + 1}</div>
                       <div className={cx("type")}>{note.type}</div>
                       <div className={cx("title")}>{note.title}</div>
-                      <div className={cx("date")}>{diffTime(note.createAt)}</div>
-                      <div className={cx("author")}>{note.username}</div>
+                      <div className={cx("date")}>{diffTime(note.update_at)}</div>
+                      <div className={cx("author")}>{note.author}</div>
                     </div>
                   );
                 })}
