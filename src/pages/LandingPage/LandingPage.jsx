@@ -16,8 +16,6 @@ import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import InfoIcon from "@mui/icons-material/Info";
 import AppleIcon from "@mui/icons-material/Apple";
 import AndroidIcon from "@mui/icons-material/Android";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 import {
   FormGroup,
@@ -38,6 +36,7 @@ import { enqueueSnackbar } from "notistack";
 import classNames from "classnames/bind";
 import styles from "./LandingPage.module.scss";
 import GuestCreateForm from "../../components/GuestCreateForm";
+import axios from "axios";
 const cx = classNames.bind(styles);
 
 const diffTime = (lastDate) => {
@@ -62,28 +61,49 @@ export default function LandingPage() {
   const [largeNote, setLargeNote] = useState(-1);
   const [theme, setTheme] = useState(true);
   const [listUserOnline, setlistUserOnline] = useState([]);
+
+  // useEffect(() => {
+  //   userApi.getNewUsers().then((res) => setNewUsers(res.data.slice(0, 5)));
+  //   userApi.userOnline().then((res) => {
+  //     const status = res.users.filter((user) => user.statesLogin === 1);
+  //     setlistUserOnline(status);
+  //   });
+  // }, []);
+
+  const list_user_online = async () => {
+    const response = axios.get(`https://sakaivn.online/users-online`)
+    setlistUserOnline((await response).data.users)
+  }
+
+  useEffect(() => {  
+    list_user_online();
+  }, [])
+
+  const list_last_user = async () => {
+    const response = axios.get('https://sakaivn.online/lastUser')
+    setNewUsers((await response).data.data)
+  }
+
   useEffect(() => {
-    userApi.getNewUsers().then((res) => setNewUsers(res.data.slice(0, 5)));
-    userApi.userOnline().then((res) => {
-      const status = res.users.filter((user) => user.statesLogin === 1);
-      setlistUserOnline(status);
-    });
-    noteApi.getLastestNotes().then(async (res) => {
-      let notes = [...res.public_note.slice(-10)];
-      setNewNotes(notes);
-    });
-  }, []);
+    list_last_user()
+  },[])
+
   useEffect(() => {
     setTimeout(() => {
-      noteApi
-        .getNumberNote()
-        .then((data) => {
-          console.log({ data });
-          setUserMostNote(data.data);
-        })
-        .catch((err) => console.log({ err }));
+      noteApi.getNumberNote().then((data) => {
+        setUserMostNote(data.data);
+      });
     }, 5000);
   }, [listUserMostNote]);
+
+  const list_public_note = async () => {
+      const response = await axios.get(`https://sakaivn.online/notes_public`)
+      setNewNotes(response.data.public_note)
+  }
+
+  useEffect(() => {
+    list_public_note()
+  }, [])
 
   // useEffect(() => {
   //   noteApi.getNumberNote().then((data) => {
@@ -177,23 +197,22 @@ export default function LandingPage() {
                 })}
             </div>
           </div>
+
           <div className={cx("news-title")}>Lastest Public Notes</div>
           <div className={cx("lastest-notes")}>
             <div className={cx("list")}>
-              {newNotes &&
-                [...newNotes].reverse().map((note, index) => {
-                  return (
-                    <div className={cx("note")} key={index} onClick={() => setLargeNote(9 - index)}>
-                      <div className={cx("index")}>{index + 1}</div>
-                      <div className={cx("type")}>{note.type}</div>
-                      <div className={cx("title")}>{note.title}</div>
-                      <div className={cx("date")}>{diffTime(note.update_at)}</div>
-                      <div className={cx("author")}>{note.author}</div>
-                    </div>
-                  );
-                })}
+              {newNotes?.map((item, index) => (
+                <div className={cx("note")} key={index}>
+                  <div className={cx("index")}>{index + 1}</div>
+                  <div className={cx("type")}>{item.type}</div>
+                  <div className={cx("title")}>{item.title}</div>
+                  <div className={cx("date")}>{diffTime(item.update_at)}</div>
+                  <div className={cx("author")}>{item.author}</div>
+              </div>
+              ))}
             </div>
           </div>
+          
           <div className={cx("news-title")}>New Users</div>
           <div className={cx("new-users")}>
             <div className={cx("users")}>
@@ -211,7 +230,7 @@ export default function LandingPage() {
                           style={{ display: "flex", alignItems: "center" }}
                         >
                           <img src={user.linkAvatar} alt='' width={40} height={40} />
-                          {index}
+                          
                         </div>
                         <div className={cx("name")}>{user.name}</div>
                         <div className={cx("date")}>{diffTime(user.createAt)}</div>
@@ -227,13 +246,13 @@ export default function LandingPage() {
             <div className={cx("list")}>
               {listUserOnline.map((user, index) => {
                 return (
-                  <Link to={`/profile/${user.id}`}>
-                    <div className={cx("list-item")} key={index}>
+                  <Link to={`/profile/${user.user_id}`} key={index}>
+                    <div className={cx("list-item")} >
                       <div className={cx("avatar")}>
-                        <img src={user.img} alt='' width={40} height={40} />
+                        <img src={user.url_avatar} alt='' width={40} height={40} />
                       </div>
 
-                      <div className={cx("name")}>{user.name}</div>
+                      <div className={cx("name")}>{user.user_name}</div>
                       <div className={cx("time")}>Onlines</div>
                       <div className={cx("status", "active")}></div>
                     </div>
@@ -484,8 +503,8 @@ function Note({ note, active, index, large = false, clearLarge }) {
         </div>
       )}
       {note.type === "checklist" &&
-        note.data.map((item) => (
-          <div>
+        note.data.map((item, index) => (
+          <div key={index}>
             <input type='checkbox' disabled checked={item.status} />
             {item.content}
           </div>
@@ -497,7 +516,6 @@ function Note({ note, active, index, large = false, clearLarge }) {
       >
         Share
       </Button>
-      {console.log(note)}
       {note.username && (
         <Link to={`/profile/${note.idUser}`}>
           <p
