@@ -23,6 +23,7 @@ import {
   styled,
   tooltipClasses,
 } from "@mui/material";
+
 import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { colorBucket } from "../../constants";
@@ -30,15 +31,17 @@ import { colorBucket } from "../../constants";
 import ColorBox from "../ColorBox";
 import RemindIcon from "../CustomIcons/RemindIcon";
 import { useSnackbar } from "notistack";
-import { ShareNoteContext } from "../home";
+
 import noteApi from "../../api/noteApi";
 import { useNavigate } from "react-router-dom";
 import "./ToolNote.css";
+
 ToolsNote.propTypes = {
   handleChangeNote: PropTypes.func.isRequired,
   handleOptionsNote: PropTypes.func.isRequired,
   options: PropTypes.object.isRequired,
 };
+
 const configColorBox = { width: "24px", height: "24px", borderRadius: "50%", cursor: "pointer" };
 const TransparentTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -66,6 +69,7 @@ function ToolsNote({
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const [noteData, setNoteData] = useState(null);
+  const [isPublic, setIsPublic] = useState(false);
   const navigate = useNavigate();
   const shareNoteId = () => {
     
@@ -105,10 +109,7 @@ function ToolsNote({
   const handleClickRemind = () => {
     setPopRemind(true);
   };
-  const handleNotePublic = () => {
-    handleOptionsNote({ notePublic: notePublic === 0 ? 1 : 0 });
-    setNotePublic((prev) => (prev === 0 ? 1 : 0));
-  };
+ 
   const warningAlert = () => {
     enqueueSnackbar("Sharing is currently unavailable. Try it in the next update", {
       variant: "warning",
@@ -138,6 +139,29 @@ function ToolsNote({
       enqueueSnackbar(error.message, { variant: "error" });
     }
   };
+
+  // useEffect(() => {
+  //   if (isPublic) {
+  //     const fetchPublicNote = async () => {
+  //       try {
+  //         const response = await noteApi.getPublicNote(noteId);
+  //         setNoteData(response.data.Note); 
+  //       } catch (error) {
+  //         console.error("Error fetching public note:", error);
+  //       }
+  //     };
+  //     fetchPublicNote();
+  //   } else {
+  //     setNoteData(null); 
+  //   }
+  // }, [isPublic]);
+
+  const handleNotePublic = () => {
+    handleOptionsNote({ notePublic: notePublic === 0 ? 1 : 0 });
+    setNotePublic((prev) => (prev === 0 ? 1 : 0));
+    setIsPublic(!isPublic);
+  };
+
   return (
     <div
       className={"box-tool"}

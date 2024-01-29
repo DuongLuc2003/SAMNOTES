@@ -47,7 +47,7 @@ import "../../pages/LandingPage/LandingPage.module.scss";
 import GuestCreateForm from "../GuestCreateForm";
 import classNames from "classnames/bind";
 import styles from "../../pages/LandingPage/LandingPage.module.scss";
-
+import { Link } from 'react-router-dom';
 SideBar.propTypes = {
   handleOpenDrawer: PropTypes.func.isRequired,
   drawerNew: PropTypes.bool.isRequired,
@@ -94,7 +94,7 @@ function SideBar({ usergg, handleOpenDrawer, drawerNew }) {
         return window.location.assign("/login");
       }
       await userApi.open2(user.id, { password_2: valueLock2 });
-      navigate("/home/screenshot");
+      navigate("/about/screenshot");
       setOpenLock2(false);
     } catch (error) {
       enqueueSnackbar("Password 2 not true", { variant: "error" });
@@ -105,12 +105,11 @@ function SideBar({ usergg, handleOpenDrawer, drawerNew }) {
     <HomeIcon style={dark} />,
     <EditCalendarIcon style={dark} />,
     <GridView style={dark} />,
-    <CalendarMonth style={dark} />,
+    // <CalendarMonth style={dark} />,
     <Inventory2Outlined style={dark} />,
     <Screenshot style={dark} />,
     <DeleteOutline style={dark} />,
-
-    <SettingsOutlined style={dark} />,
+    // <SettingsOutlined style={dark} />,
     <PeopleOutline style={dark} />,
   ];
 
@@ -125,11 +124,11 @@ function SideBar({ usergg, handleOpenDrawer, drawerNew }) {
     if (nav === "create notes") {
       setModal(true);
     }
-    if (nav === "home") {
+    if (nav === "about") {
       // Chuyển hướng đến trang màn hình home
       navigate("/");
     } else {
-      navigate(`/home/${nav}`);
+      navigate(`/about/${nav}`);
     }
   };
 
@@ -137,7 +136,14 @@ function SideBar({ usergg, handleOpenDrawer, drawerNew }) {
     if (checkJWT()) {
       window.location.assign("/login");
     }
-    navigate("/home/profile/");
+    navigate("/about/profile/");
+  };
+
+  const handleSettingsClick = (nav) => {
+    if (checkJWT()) {
+      window.location.assign("/login");
+    }
+    navigate("/about/settings/");
   };
 
   return (
@@ -222,11 +228,12 @@ function SideBar({ usergg, handleOpenDrawer, drawerNew }) {
                   }
                 />
               )}
-
-              <ListItemIcon className={classes.settingIcon}>
-                <SettingsOutlined className="max-lg:hidden" sx={{ color: "#fff", fontSize: "30px", marginLeft: "20px" }} />
-              </ListItemIcon>
             </ListItemButton>
+            <ListItemIcon className={classes.settingIcon} >
+              <ListItemButton onClick={handleSettingsClick}>
+              <SettingsOutlined className="max-lg:hidden" sx={{ color: "#fff", fontSize: "30px", marginLeft: "8px" }} />
+                </ListItemButton>  
+              </ListItemIcon>
           </ListItem>
         </List>
       </Box>
@@ -301,14 +308,14 @@ function SideBar({ usergg, handleOpenDrawer, drawerNew }) {
       <Box className='nav' sx={{ marginTop: 4 }}>
         <List>
           {[
-            "Home",
+            "About",
             "Create notes",
             "Explore",
-            "Calendar",
+            // "Calendar",
             "Archived",
             "Screenshot",
             "Deleted",
-            "Settings",
+            // "Settings",
             "Groups",
           ].map((text, index) => (
             <ListItem

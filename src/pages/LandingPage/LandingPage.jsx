@@ -135,7 +135,7 @@ export default function LandingPage() {
         </div>
         <div className={cx("menu", { hidden: !menu })}>
           <div className={cx("item")}>
-            <Link to={checkJWT() ? "/login" : "/home"}>Home</Link>
+            <Link to={checkJWT() ? "/login" : "/about"}>Manager My Note</Link>
           </div>
           {/* <div className={cx("item")}>
             <Link to='/upload'>Upload</Link>

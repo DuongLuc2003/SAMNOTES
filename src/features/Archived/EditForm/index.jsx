@@ -241,6 +241,7 @@ console.log(res);
             />
           )}
         </Box>
+        
         <Box style={{ height: "calc((100% - 50px)/2)", marginTop: "5px" }}>
           <ToolsNote
             type='Edit'

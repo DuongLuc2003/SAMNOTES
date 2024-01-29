@@ -19,7 +19,7 @@ import noteApi from "../../api/noteApi";
 import userApi from "../../api/userApi";
 import ToolsNote from "../ToolsNote";
 import SideBar from "../../components/SideBar";
-
+import EditForm from "../../features/Archived/EditForm";
 const Note = () => {
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);
@@ -78,6 +78,7 @@ const Note = () => {
               })}
             </Box>
           )}
+          {/* <EditForm/> */}
           <ToolsNote
             type='Edit'
             options={""}
@@ -126,7 +127,7 @@ const Note = () => {
             fontSize: "60px",
           }}
         >
-          404
+          Private
         </Box>
       )}
     </>

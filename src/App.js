@@ -33,8 +33,8 @@ function App() {
         /> */}
         <Route path='/profile/:id' element={<Profile_orther />} />
         <Route element={<RequireLogin />}>
-          <Route exact path='/home/explore' element={<Explore />} />
-          <Route path='/home/*' element={<Home />} />
+          <Route exact path='/about/explore' element={<Explore />} />
+          <Route path='/about/*' element={<Home />} />
           <Route path='/upload' element={<ImageUploader />} />
           <Route path='/group/:idGroup/*' element={<GroupDetail />} />
           <Route path='/note/:noteId' element={<Note />} />
@@ -42,14 +42,14 @@ function App() {
           <Route path='/anonymous' element={<Anonymous />} />
         </Route>
 
-        <Route path='/login' element={checkJWT() ? <AuthLayout /> : <Navigate to='/home' replace />} />
+        <Route path='/login' element={checkJWT() ? <AuthLayout /> : <Navigate to='/about' replace />} />
         <Route
           path='/register'
-          element={checkJWT() ? <AuthLayout /> : <Navigate to='/home' replace />}
+          element={checkJWT() ? <AuthLayout /> : <Navigate to='/about' replace />}
         />
         <Route
           path='/forgot'
-          element={checkJWT() ? <AuthLayout /> : <Navigate to='/home' replace />}
+          element={checkJWT() ? <AuthLayout /> : <Navigate to='/about' replace />}
         />
         <Route path='/test' element={<Test />} />
       </Routes>

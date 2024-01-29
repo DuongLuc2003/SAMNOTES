@@ -26,7 +26,7 @@ const options = [
   'Blocked'
 ]
 
-const socket = io("https://lhvn.online").connect();
+const socket = io("https://sakaivn.online").connect();
 
 const getCurrentDate = () => {
   var currentTime = new Date();

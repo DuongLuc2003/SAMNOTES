@@ -40,13 +40,26 @@ export const ShareNoteContext = createContext(null);
 function Home(props) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
+  const [time, setTime] = useState()
 
   const [user, setUser] = useState(
     useSelector((state) => state.user.current) || JSON.parse(localStorage.getItem("user"))
   );
+  const check_user = async () => {
+    if(user.id){
+      const response = await axios.get(`https://sakaivn.online/check-status/${user.id}`)
+      setTime(response.data)
+    }
+  }
+
   useEffect(() => {
-    console.log(user)
+    check_user()
+    setInterval(() => {
+      check_user()
+    }, 30000)
   },[user])
+
+  console.log(time)
   const usergg = jwtDecode(localStorage.getItem(StorageKeys.TOKEN));
   const [sharedNoteId, setSharedNoteId] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
@@ -106,11 +119,11 @@ function Home(props) {
   const [files, setFiles] = useState([]);
   const imgRef = useRef(null);
   const fileImg = useRef(null);
-  let socket = useRef();
-  useEffect(() => {
-    socket.current = io(STATIC_HOST);
-    dispatch(socketActions.setSocket(socket.current));
-  }, []);
+  // let socket = useRef();
+  // useEffect(() => {
+  //   socket.current = io(STATIC_HOST);
+  //   dispatch(socketActions.setSocket(socket.current));
+  // }, []);
   useEffect(() => {
     const im = imgRef.current;
 

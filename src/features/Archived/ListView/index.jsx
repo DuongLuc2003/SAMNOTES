@@ -40,7 +40,7 @@ function ListView({
   const [lockData, setLockData] = useState(new Array(data.length));
 
   const clearA = () => {
-    if (location.pathname !== "/home/archived") clear();
+    if (location.pathname !== "/about/archived") clear();
     else {
       setSelected(null);
     }
@@ -136,7 +136,7 @@ function ListView({
                   if (item.notePublic === 1) {
                     return window.history.pushState({}, "", `/note/${item.idNote}`);
                   }
-                  window.history.pushState({}, "", "/home/archived");
+                  window.history.pushState({}, "", "/about/archived");
                 }}
               >
 
