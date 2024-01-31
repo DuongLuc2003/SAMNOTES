@@ -183,6 +183,7 @@ console.log(res);
               top: "10px",
               left: "5px",
             }}
+            id="pinnedIcon"
           >
             <PinnedIcon active={Boolean(pinned)} />
           </span>
