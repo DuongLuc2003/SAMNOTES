@@ -11,6 +11,7 @@ import {
   TextField,
   DialogActions,
   Typography,
+  Drawer
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { convertColor } from "../../constants";
@@ -20,12 +21,13 @@ import userApi from "../../api/userApi";
 import ToolsNote from "../ToolsNote";
 import SideBar from "../../components/SideBar";
 import EditForm from "../../features/Archived/EditForm";
+import "./Note.css"
 const Note = () => {
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(null);
   const { noteId } = useParams();
-
+  const [drawerEdit, setDrawerEdit] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const clipboard = (e) => {
@@ -56,16 +58,16 @@ const Note = () => {
     });
   }, []);
 
-  const handleNoteForm = () => {
-
-  }
+  const handleNoteForm = async (value) => {
+    
+  };
 
   return (
     <>
       <SideBar />
       {data && data ? (
         <div className={`flex-grow absolute top-0 right-0 p-[2%] overflow-auto w-[calc(100vw-250px)] h-full bg-[${convertColor(data.color)}]`}>
-          <div className="text-[20px] pb-2 border-b-2 border-black mb-5">{data.title}</div>
+          {/* <div className="text-[20px] pb-2 border-b-2 border-black mb-5">{data.title}</div>
           {data.type !== "checklist" ? (
             <Box>{data.data}</Box>
           ) : (
@@ -77,9 +79,37 @@ const Note = () => {
                 </Box>;
               })}
             </Box>
-          )}
-          {/* <EditForm/> */}
-          <ToolsNote
+          )} */}
+          <Drawer
+      // variant='persistent'
+      className='box-container'
+      id='wapperEditNote'
+      anchor='right'
+      variant="permanent"
+      sx={{
+        '& .css-12r3w90-MuiDrawer-docked .MuiDrawer-paper': { boxSizing: 'border-box', width: "calc(100% - 250px)"},
+        '.css-10y9h7e-MuiButtonBase-root-MuiIconButton-root': { display:'none'}
+        // [`.MuiPaper-root MuiPaper-elevation MuiPaper-elevation0 MuiDrawer-paper MuiDrawer-paperAnchorRight MuiDrawer-paperAnchorDockedRight css-18sg6k4-MuiPaper-root-MuiDrawer-paper`]: {
+        //   display: "block",
+        //   width: "calc(100% - 150px)",
+        //   boxSizing: "border-box",
+        //   height: 101 ? 100 + "%" : "calc(100% - 65px)",
+        //   visibility: "visible !important",
+        //   transform: "translateX(0) !important",
+        //   // top: 30 + "px",
+        //   // top: toggleNote ? 220 + "px" : 0,
+        // },
+      }}
+    >
+<EditForm
+            dataItem={data} 
+            handleDelNote={handleNoteForm} 
+            setArchivedData={handleNoteForm}
+            className="edit-form"
+          />
+    </Drawer>
+          
+          {/* <ToolsNote
             type='Edit'
             options={""}
             handleChangeNote={""}
@@ -87,14 +117,14 @@ const Note = () => {
             handleDelNote={""}
             handleNoteForm={''}
             dataItem={""}
-          />
+          /> */}
           {data.type === "image" && (
             <Box>
               <img src={data.metaData} alt='' style={{ width: "100%", objectFit: "contain" }} />
             </Box>
           )}
 
-          <Button sx={{ marginTop: "30px" }} variant='contained' onClick={handleClickOpen}>
+          {/* <Button sx={{ marginTop: "30px" }} variant='contained' onClick={handleClickOpen}>
             Share
           </Button>
           <Dialog open={open} onClose={handleClose}>
@@ -112,7 +142,7 @@ const Note = () => {
             <DialogActions>
               <Button onClick={clipboard}> COPY URL</Button>
             </DialogActions>
-          </Dialog>
+          </Dialog> */}
         </div>
       ) : (
         <Box

@@ -41,7 +41,7 @@ export default function EditForm({
   const [loadedPage, setLoadedPage] = useState(false);
   const [currentDateTime, setCurrentDateTime] = useState("");
   const [drawerEdit, setDrawerEdit] = useState(false);
-  const [pinned, setPinned] = useState(dataItem.pinned);
+  const [pinned, setPinned] = useState(() => dataItem ? dataItem.pinned : false);
   const [data, setData] = useState(getList(dataItem.data, dataItem.type));
   const [colorNote, setColorNote] = useState(dataItem.color);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -164,6 +164,7 @@ console.log(res);
             Edit
           </span>
         </Box>
+        
         <Box
           className='box-container boxEdit'
           sx={{

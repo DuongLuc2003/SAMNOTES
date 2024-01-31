@@ -22,6 +22,8 @@ import {
   Tooltip,
   styled,
   tooltipClasses,
+  DialogTitle,
+  TextField
 } from "@mui/material";
 
 import { DateTimePicker } from "@mui/x-date-pickers";
@@ -33,7 +35,9 @@ import RemindIcon from "../CustomIcons/RemindIcon";
 import { useSnackbar } from "notistack";
 
 import noteApi from "../../api/noteApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useParams} from "react-router-dom";
+import { enqueueSnackbar } from "notistack";
+
 import "./ToolNote.css";
 
 ToolsNote.propTypes = {
@@ -66,14 +70,24 @@ function ToolsNote({
   const [openLock, setOpenLock] = useState(false);
   const [valueLock, setValueLock] = useState(options.lock);
   const [notePublic, setNotePublic] = useState(options.notePublic);
-  const { enqueueSnackbar } = useSnackbar();
+  // const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const [noteData, setNoteData] = useState(null);
   const [isPublic, setIsPublic] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const shareNoteId = () => {
-    
-  }
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const clipboard = (e) => {
+    if (dataItem && dataItem.idNote) {
+      navigator.clipboard.writeText("http://samnotes.online/note/" + dataItem.idNote);
+      enqueueSnackbar("Copied to Clipboard", { variant: "success" });
+      handleClose();
+    } else {
+      console.log('err idNote')
+    }
+  };
+
   // useEffect(() => {
   //   setDueAt(options.dueAt && dayjs(options.dueAt));
   //   setRemindAt(options.remindAt && dayjs(options.remindAt));
@@ -313,15 +327,33 @@ function ToolsNote({
                 borderRadius: "10px",
               },
             }}
-            onClick={() => {
-              shareNoteId(dataItem.idNote);
-            }}
+            variant='contained'
+            onClick={handleClickOpen}
+            // onClick={() => {
+            //   shareNoteId(dataItem.idNote);
+            // }}
           >
             <ListItemIcon>
               <Share />
             </ListItemIcon>
             <ListItemText primary='Share' />
           </ListItemButton>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Share</DialogTitle>
+            <DialogContent>
+              <TextField
+                id='name'
+                type='text'
+                fullWidth
+                variant='standard'
+                disabled
+                value={"http://samnotes.online/note/" + (dataItem && dataItem.idNote)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={clipboard}> COPY URL</Button>
+            </DialogActions>
+          </Dialog>
         </ListItem>
         <ListItem>
           <ListItemButton
