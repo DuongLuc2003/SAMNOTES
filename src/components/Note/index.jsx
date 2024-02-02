@@ -27,7 +27,6 @@ const Note = () => {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(null);
   const { noteId } = useParams();
-  const [drawerEdit, setDrawerEdit] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const clipboard = (e) => {
@@ -35,6 +34,8 @@ const Note = () => {
     enqueueSnackbar("Copied to Clipboard", { variant: "success" });
     handleClose();
   };
+
+
 
   useEffect(() => {
     noteApi.getPublicNote(noteId).then((res) => {
@@ -65,9 +66,9 @@ const Note = () => {
   return (
     <>
       <SideBar />
-      {data && data ? (
+      {data && data && data.notePublic === 1 ? (
         <div className={`flex-grow absolute top-0 right-0 p-[2%] overflow-auto w-[calc(100vw-250px)] h-full bg-[${convertColor(data.color)}]`}>
-          {/* <div className="text-[20px] pb-2 border-b-2 border-black mb-5">{data.title}</div>
+          <div className="text-[20px] pb-2 border-b-2 border-black mb-5">{data.title}</div>
           {data.type !== "checklist" ? (
             <Box>{data.data}</Box>
           ) : (
@@ -79,7 +80,7 @@ const Note = () => {
                 </Box>;
               })}
             </Box>
-          )} */}
+          )}
           <Drawer
       // variant='persistent'
       className='box-container'
@@ -93,26 +94,33 @@ const Note = () => {
         },
         '#pinnedIcon': { 
           display: 'none'
-        }
+        },
+        '#keyboardarrowright':{
+          display: 'none'
+        },
+        // '.box-tool':{
+        //   display: 'none'
+        // }
       }}
     >
-<EditForm
+          <EditForm
             dataItem={data} 
             handleDelNote={handleNoteForm} 
             setArchivedData={handleNoteForm}
             className="edit-form"
           />
-    </Drawer>
-          
           {/* <ToolsNote
             type='Edit'
             options={""}
             handleChangeNote={""}
-            handleOptionsNote={""}
+            // handleOptionsNote={""}
             handleDelNote={""}
             handleNoteForm={''}
             dataItem={""}
           /> */}
+    </Drawer>
+          
+          
           {data.type === "image" && (
             <Box>
               <img src={data.metaData} alt='' style={{ width: "100%", objectFit: "contain" }} />
@@ -155,6 +163,7 @@ const Note = () => {
           Private
         </Box>
       )}
+      
     </>
   );
 };

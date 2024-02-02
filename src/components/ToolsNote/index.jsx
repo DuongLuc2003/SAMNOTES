@@ -170,12 +170,26 @@ function ToolsNote({
   //   }
   // }, [isPublic]);
 
-  const handleNotePublic = () => {
-    handleOptionsNote({ notePublic: notePublic === 0 ? 1 : 0 });
-    setNotePublic((prev) => (prev === 0 ? 1 : 0));
-    setIsPublic(!isPublic);
+  const handleNotePublic = async () => {
+    try {
+      const newNotePublic = notePublic === 0 ? 1 : 0;
+      setNotePublic(newNotePublic);
+      const response = await noteApi.editNote(dataItem.idNote, { notePublic: newNotePublic });
+      if (response && response.note) {
+        console.log("notePublic trong response:", response.note.notePublic);
+        const updatedNotePublic = response.note.notePublic;
+        setNotePublic(updatedNotePublic);
+        enqueueSnackbar("Note public status updated successfully", { variant: "success" });
+      } else {
+        enqueueSnackbar("Failed to update note public status", { variant: "error" });
+      }
+    } catch (error) {
+      console.error("Error updating note public status:", error);
+      enqueueSnackbar("Error updating note public status", { variant: "error" });
+    }
   };
-
+  
+  
   return (
     <div
       className={"box-tool"}

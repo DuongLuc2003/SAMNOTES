@@ -142,6 +142,7 @@ console.log(res);
             sx={{ position: "absolute", left: "0" }}
             aria-label='close'
             size='medium'
+            id="keyboardarrowright"
           >
             <KeyboardArrowRight fontSize='large' />
           </IconButton>
