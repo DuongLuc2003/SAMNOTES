@@ -30,7 +30,7 @@ const Note = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const clipboard = (e) => {
-    navigator.clipboard.writeText("http://samnotes.online/note/" + noteId);
+    navigator.clipboard.writeText("http://samnote.mangasocial.online/note/" + noteId);
     enqueueSnackbar("Copied to Clipboard", { variant: "success" });
     handleClose();
   };
@@ -139,7 +139,7 @@ const Note = () => {
                 fullWidth
                 variant='standard'
                 disabled
-                value={"http://samnotes.online/note/" + noteId}
+                value={"http://123.24.166.24:18011/note/" + noteId}
               />
             </DialogContent>
             <DialogActions>

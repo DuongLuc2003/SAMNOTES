@@ -53,7 +53,7 @@ function Profile_orther({ data, handleDelNote, setArchivedData, toolsNote }) {
     const api_profile = async () => {
       const result = await axios({
         method: "GET",
-        url: `https://sakaivn.online/profile/${id}`,
+        url: `https://samnote.mangasocial.online/profile/${id}`,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
@@ -73,7 +73,7 @@ function Profile_orther({ data, handleDelNote, setArchivedData, toolsNote }) {
 
   // useEffect(() => {
   //   if(otherProfile){
-  //     axios.get(`https://sakaivn.online/profiles_search?key=${otherProfile.userId}`).then(data => {
+  //     axios.get(`https://samnote.mangasocial.online/profiles_search?key=${otherProfile.userId}`).then(data => {
   //       set
   //     })
 

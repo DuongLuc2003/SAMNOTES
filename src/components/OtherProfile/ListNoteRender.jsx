@@ -17,6 +17,7 @@ import Menu from '@mui/material/Menu';
 
 const ListNoteRender = ({ listData, user }) => {
     const NoteRender = (noteData) => {
+        console.log(noteData)
         const [listComment, setListComment] = useState([]);
         const [like, setLike] = useState(false);
         const [dislike, setDislike] = useState(false);
@@ -41,7 +42,7 @@ const ListNoteRender = ({ listData, user }) => {
         useOnClickOutside(cmtRef, () => { setShowComment(false) })
 
         useEffect(() => {
-            axios.get(`https://sakaivn.online/notes/notes-comment/${noteData.noteData.idNote}`, {
+            axios.get(`https://samnote.mangasocial.online/notes/notes-comment/${noteData.noteData.idNote}`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + localStorage.getItem("access_token")
@@ -52,7 +53,7 @@ const ListNoteRender = ({ listData, user }) => {
                 setListComment([]);
             })
 
-            axios.get('https://sakaivn.online/view').then(res => {
+            axios.get('https://samnote.mangasocial.online/view').then(res => {
                 res.data.data.map(data => {
                     if (data.idNote == noteData.noteData.idNote) {
                         setViewCount(data.view)
@@ -68,7 +69,7 @@ const ListNoteRender = ({ listData, user }) => {
          */
 
         const handlePostComment = () => {
-            axios.post("https://sakaivn.online/notes/notes-comment", {
+            axios.post("https://samnote.mangasocial.online/notes/notes-comment", {
                 idNote: noteData.noteData.noteId,
                 idUser: user.id,
                 parentId: 0,
@@ -81,12 +82,20 @@ const ListNoteRender = ({ listData, user }) => {
             })
         }
 
+        function handleClickDetailNote(myLink){
+            window.location.href=myLink;
+        }
+
         return (
             <div className="flex h-max max-xl:flex-col max-xl:gap-5 border-[1px solid #e2e2e2] rounded-[12px] px-[6px] py-[12px] mx-[12px] shadow-[0px 4px 4px rgba(0, 0, 0, 0.25)]"
                 style={{
                     backgroundColor: `rgba(${noteData.noteData.color.r}, ${noteData.noteData.color.g}, ${noteData.noteData.color.b}, ${noteData.noteData.color.a})`,
-                }}>
-                <div className={`flex flex-grow-0 flex-col ${showComment ? 'w-full xl:w-3/4' : 'w-full'}`}>
+                }}
+                onClick={() => handleClickDetailNote(`https://samnotes.online/note/${noteData.noteData.idNote}`)}
+                >
+                <div className={`flex flex-grow-0 flex-col cursor-pointer ${showComment ? 'w-full xl:w-3/4' : 'w-full'}`} 
+               
+                >
                     {/* note's main */}
                     <div className="px-4 py-2 flex flex-col">
                         <div className="flex items-center gap-2">

@@ -80,7 +80,7 @@ function ToolsNote({
   const handleClose = () => setOpen(false);
   const clipboard = (e) => {
     if (dataItem && dataItem.idNote) {
-      navigator.clipboard.writeText("http://samnotes.online/note/" + dataItem.idNote);
+      navigator.clipboard.writeText("http://samnote.mangasocial.online/note/" + dataItem.idNote);
       enqueueSnackbar("Copied to Clipboard", { variant: "success" });
       handleClose();
     } else {
@@ -361,7 +361,7 @@ function ToolsNote({
                 fullWidth
                 variant='standard'
                 disabled
-                value={"http://samnotes.online/note/" + (dataItem && dataItem.idNote)}
+                value={"http://samnote.mangasocial.online/note/" + (dataItem && dataItem.idNote)}
               />
             </DialogContent>
             <DialogActions>

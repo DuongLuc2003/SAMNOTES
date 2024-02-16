@@ -68,7 +68,7 @@ function Login(props) {
       localStorage.setItem(StorageKeys.USER, JSON.stringify(res?.user));
 
       enqueueSnackbar("Logged in successfully", { variant: "success" });
-      navigate("/home");
+      navigate("/");
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
     }
@@ -86,7 +86,7 @@ function Login(props) {
     }
     enqueueSnackbar("Logged in successfully", { variant: "success" });
     setTimeout(() => {
-      navigate("/home");
+      navigate("/");
     }, 1000);
   };
 

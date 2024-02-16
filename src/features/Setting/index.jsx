@@ -103,7 +103,7 @@ function Settings({ usergg, setDf_nav, setColorNote, setUser }) {
      enqueueSnackbar("You will log out after 1s", { variant: "success" });
       setTimeout(() => {
         // window.location.reload(true);
-        window.location.assign("/");
+        // window.location.assign("/");
       }, 1000);
     } catch {
       enqueueSnackbar("error", { variant: "error" });

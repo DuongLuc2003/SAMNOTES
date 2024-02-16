@@ -18,7 +18,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FaSmile, FaSadTear, FaGrin, FaDizzy, FaAngry, FaMeh } from "react-icons/fa";
 import { AiOutlineMore, AiFillMessage } from "react-icons/ai";
 import { useOnClickOutside } from "src/customHook/useOnClickOutside";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import { useEffectOnce } from "src/customHook/useEffectOnce";
 const options = [
   'All',
@@ -26,7 +26,7 @@ const options = [
   'Blocked'
 ]
 
-const socket = io("https://sakaivn.online").connect();
+// const socket = io("https://samnote.mangasocial.online").connect();
 
 const getCurrentDate = () => {
   var currentTime = new Date();
@@ -99,10 +99,10 @@ const Anonymous = () => {
       console.log(data)
     };
 
-    socket.on("receive_message", handleReceivedMessage);
+    // socket.on("receive_message", handleReceivedMessage);
 
     return () => {
-      socket.off("receive_message", handleReceivedMessage);
+      // socket.off("receive_message", handleReceivedMessage);
     };
   });
 
@@ -118,12 +118,12 @@ const Anonymous = () => {
         content: messageContent
       }
     };
-    socket.emit("send_message", data);
+    // socket.emit("send_message", data);
 
     // save data to db
     axios({
       method: "POST",
-      url: `https://sakaivn.online/message/chat-unknown/${targetMessageUserData.id}`,
+      url: `https://samnote.mangasocial.online/message/chat-unknown/${targetMessageUserData.id}`,
       data: {
         content: messageContent,
         id: "",
@@ -178,10 +178,10 @@ const Anonymous = () => {
   useEffect(() => {
     if (targetMessageUserData) {
       setMessageListData([]);
-      axios.get(`https://sakaivn.online/message/chat-unknown/${users.id}`)
+      axios.get(`https://samnote.mangasocial.online/message/chat-unknown/${users.id}`)
         .then(res1 => {
           const data1 = res1.data.data.filter(message => Number.parseInt(message.idReceive) === targetMessageUserData.id);
-          axios.get(`https://sakaivn.online/message/chat-unknown/${targetMessageUserData.id}`)
+          axios.get(`https://samnote.mangasocial.online/message/chat-unknown/${targetMessageUserData.id}`)
             .then(res2 => {
               const data2 = res2.data.data.filter(message => Number.parseInt(message.idSend) === users.id);
               // Gộp hai mảng
@@ -243,7 +243,7 @@ const Anonymous = () => {
   //   // http://14.225.7.221:18011
   //   const data = axios({
   //     method: "POST",
-  //     url: `https://sakaivn.online/message/chat-unknown/${targetMessageUserData.id}`,
+  //     url: `https://samnote.mangasocial.online/message/chat-unknown/${targetMessageUserData.id}`,
   //     data: {
   //       content: messageContent,
   //       id: "",
@@ -381,7 +381,7 @@ const Anonymous = () => {
           <My_text textAlign='center' variant='subtitle1'>
             You now in anonymous mode. You can chat with others anonymously
           </My_text>
-          <Link to={"/home/profile"}>
+          <Link to={"/about/profile"}>
             <My_button
               style={{
                 marginBottom: 10 + "px",

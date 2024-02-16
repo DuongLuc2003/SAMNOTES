@@ -47,7 +47,7 @@ function Home(props) {
   );
   const check_user = async () => {
     if(user.id){
-      const response = await axios.get(`https://sakaivn.online/check-status/${user.id}`)
+      const response = await axios.get(`https://samnote.mangasocial.online/check-status/${user.id}`)
       setTime(response.data)
     }
   }

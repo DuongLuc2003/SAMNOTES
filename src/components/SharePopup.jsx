@@ -98,7 +98,7 @@ const SharePopup = ({ noteId }) => {
 
   useEffect(() => {
     setId(noteId);
-    setText(`http://samnotes.online/note/${noteId}`);
+    setText(`https://samnote.mangasocial.online/note/${noteId}`);
   }, [noteId]);
 
   const handleCloseCancel = () => {

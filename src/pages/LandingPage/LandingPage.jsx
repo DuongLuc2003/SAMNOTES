@@ -71,7 +71,7 @@ export default function LandingPage() {
   // }, []);
 
   const list_user_online = async () => {
-    const response = axios.get(`https://sakaivn.online/users-online`)
+    const response = axios.get(`https://samnote.mangasocial.online/users-online`)
     setlistUserOnline((await response).data.users)
   }
 
@@ -80,7 +80,7 @@ export default function LandingPage() {
   }, [])
 
   const list_last_user = async () => {
-    const response = axios.get('https://sakaivn.online/lastUser')
+    const response = axios.get('https://samnote.mangasocial.online/lastUser')
     setNewUsers((await response).data.data)
   }
 
@@ -97,7 +97,7 @@ export default function LandingPage() {
   }, [listUserMostNote]);
 
   const list_public_note = async () => {
-      const response = await axios.get(`https://sakaivn.online/notes_public`)
+      const response = await axios.get(`https://samnote.mangasocial.online/notes_public`)
       setNewNotes(response.data.public_note)
   }
 
@@ -447,7 +447,7 @@ function Note({ note, active, index, large = false, clearLarge }) {
   const handleClose = () => setOpen(false);
   const textRef = useRef(null);
   const clipboard = () => {
-    navigator.clipboard.writeText("http://samnotes.online/note/" + noteId);
+    navigator.clipboard.writeText("http://samnote.mangasocial.online/note/" + noteId);
     enqueueSnackbar("Copied to Clipboard", { variant: "success" });
     handleClose();
     console.log("Clipboard");
@@ -543,7 +543,7 @@ function Note({ note, active, index, large = false, clearLarge }) {
             fullWidth
             variant='standard'
             disabled
-            value={"http://samnotes.online/note/" + noteId}
+            value={"http://samnote.mangasocial.online/note/" + noteId}
           />
         </DialogContent>
         <DialogActions>

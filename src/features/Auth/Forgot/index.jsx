@@ -58,7 +58,7 @@ function Forgot() {
         try {
             const action = resetPassword(values);
             // test api
-            // const resultAction = axios.post("https://sakaivn.online/resetPasswork",{
+            // const resultAction = axios.post("https://samnote.mangasocial.online/resetPasswork",{
             //     gmail: values.gmail
             // })
 
@@ -89,7 +89,7 @@ function Forgot() {
 
             enqueueSnackbar("password change successfully", { variant: "success" });
             setTimeout(() => {
-                if (location.pathname === "/login") navigate("/home");
+                if (location.pathname === "/login") navigate("/");
                 else document.location.reload();
             }, 1000);
         } catch (e) {
@@ -108,7 +108,7 @@ function Forgot() {
         }
         enqueueSnackbar("Logged in successfully", { variant: "success" });
         setTimeout(() => {
-            navigate("/home");
+            navigate("/");
         }, 1000);
     };
 

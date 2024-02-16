@@ -34,7 +34,7 @@ const options = [
     'Blocked'
 ]
 
-const socket = io("https://sakaivn.online").connect();
+// const socket = io("https://samnote.mangasocial.online").connect();
 
 function getCurrentDate() {
     var currentTime = new Date();
@@ -112,18 +112,18 @@ export default function MessagePage() {
     }
 
 
-    useEffectOnce(() => {
-        const handleReceivedMessage = (data) => {
-            // setList((prev) => [...prev, data]);
-            console.log(data)
-        };
+    // useEffectOnce(() => {
+    //     const handleReceivedMessage = (data) => {
+    //         // setList((prev) => [...prev, data]);
+    //         console.log(data)
+    //     };
 
-        socket.on("receive_message", handleReceivedMessage);
+    //     socket.on("receive_message", handleReceivedMessage);
 
-        return () => {
-            socket.off("receive_message", handleReceivedMessage);
-        };
-    });
+    //     return () => {
+    //         socket.off("receive_message", handleReceivedMessage);
+    //     };
+    // });
 
     useEffect(() => {
         setCountMessage(getMessage.length);
@@ -158,10 +158,10 @@ export default function MessagePage() {
     useEffect(() => {
         if (targetMessageUserData) {
             setMessageListData([]);
-            axios.get(`https://sakaivn.online/message/chat-unknown/${users.id}`)
+            axios.get(`https://samnote.mangasocial.online/message/chat-unknown/${users.id}`)
                 .then(res1 => {
                     const data1 = res1.data.data.filter(message => Number.parseInt(message.idReceive) === targetMessageUserData.id);
-                    axios.get(`https://sakaivn.online/message/chat-unknown/${targetMessageUserData.id}`)
+                    axios.get(`https://samnote.mangasocial.online/message/chat-unknown/${targetMessageUserData.id}`)
                         .then(res2 => {
                             const data2 = res2.data.data.filter(message => Number.parseInt(message.idSend) === users.id);
                             // Gộp hai mảng
@@ -210,12 +210,12 @@ export default function MessagePage() {
                 content: messageContent
             }
         };
-        socket.emit("send_message", data);
+        // socket.emit("send_message", data);
 
         // save data to db
         axios({
             method: "POST",
-            url: `https://sakaivn.online/message/chat-unknown/${targetMessageUserData.id}`,
+            url: `https://samnote.mangasocial.online/message/chat-unknown/${targetMessageUserData.id}`,
             data: {
                 content: messageContent,
                 id: "",

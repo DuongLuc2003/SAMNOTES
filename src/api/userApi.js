@@ -70,7 +70,7 @@ const userApi = {
     return axiosClient.options(url, payload);
   },
   logout(id){
-    const url=`logout/${id}`;
+    const url=`/logout/${id}`;
     return axiosClient.post(url)
   }
 };

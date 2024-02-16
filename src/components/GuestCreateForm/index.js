@@ -122,14 +122,16 @@ export default function GuestCreateForm({ clear }) {
       const res = await noteApi.createNote(user.id, params);
       console.log("this is createNote:", user.id)
       const noteId = res.note.idNote;
-      const shareLink = `http://samnotes.online/note/${noteId}`
+      const shareLink = `https://samnote.mangasocial.online/note/${noteId}`
       setShareLink(shareLink);
       enqueueSnackbar("Note was created successfully", { variant: "success" });
       setIsNoteCreated(true);
     } catch (err) {
+      console.log(err)
       console.log("message: ", err.message)
-      setError('Failed to create note. Please try again.');
-      enqueueSnackbar(err, { variant: "error" });
+      setError(`Failed to create note: ${err.message}. Please try again.`);
+      enqueueSnackbar(`Error ${err.message}`);
+
     }
   };
 
