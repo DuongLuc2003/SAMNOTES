@@ -447,7 +447,7 @@ function Note({ note, active, index, large = false, clearLarge }) {
   const handleClose = () => setOpen(false);
   const textRef = useRef(null);
   const clipboard = () => {
-    navigator.clipboard.writeText("http://samnote.mangasocial.online/note/" + noteId);
+    navigator.clipboard.writeText("https://samnotes.online/note" + noteId);
     enqueueSnackbar("Copied to Clipboard", { variant: "success" });
     handleClose();
     console.log("Clipboard");
@@ -543,7 +543,7 @@ function Note({ note, active, index, large = false, clearLarge }) {
             fullWidth
             variant='standard'
             disabled
-            value={"http://samnote.mangasocial.online/note/" + noteId}
+            value={"https://samnotes.online/note" + noteId}
           />
         </DialogContent>
         <DialogActions>

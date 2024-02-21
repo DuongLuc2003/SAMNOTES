@@ -5,6 +5,10 @@ const noteApi = {
     const url = `/notes/${idUser}`;
     return axiosClient.post(url, data);
   },
+  uploadImgNote(idUser, data) {
+    const url = `/new-note/${idUser}`;
+    return axiosClient.post(url, data);
+  },
   getNotes(idUser) {
     const url = `/notes/${idUser}`;
     return axiosClient.get(url);

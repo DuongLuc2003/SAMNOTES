@@ -39,7 +39,7 @@ import { useNavigate , useParams} from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 
 import "./ToolNote.css";
-
+import { checkJWT } from "../../constants";
 ToolsNote.propTypes = {
   handleChangeNote: PropTypes.func.isRequired,
   handleOptionsNote: PropTypes.func.isRequired,
@@ -79,14 +79,16 @@ function ToolsNote({
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const clipboard = (e) => {
-    if (dataItem && dataItem.idNote) {
-      navigator.clipboard.writeText("http://samnote.mangasocial.online/note/" + dataItem.idNote);
-      enqueueSnackbar("Copied to Clipboard", { variant: "success" });
-      handleClose();
+    const isJWTExpired = checkJWT();
+
+    if (!isJWTExpired && dataItem && dataItem.idNote) {
+        navigator.clipboard.writeText("https://samnotes.online/note/" + dataItem.idNote);
+        enqueueSnackbar("Copied to Clipboard", { variant: "success" });
+        handleClose();
     } else {
-      console.log('err idNote')
+        console.log('JWT is expired or err idNote');
     }
-  };
+};
 
   // useEffect(() => {
   //   setDueAt(options.dueAt && dayjs(options.dueAt));
@@ -361,7 +363,7 @@ function ToolsNote({
                 fullWidth
                 variant='standard'
                 disabled
-                value={"http://samnote.mangasocial.online/note/" + (dataItem && dataItem.idNote)}
+                value={"https://samnotes.online/note/" + (dataItem && dataItem.idNote)}
               />
             </DialogContent>
             <DialogActions>

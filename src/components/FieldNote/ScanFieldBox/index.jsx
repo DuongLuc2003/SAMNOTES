@@ -176,7 +176,7 @@ function ScanFieldBox({ bg, handleNoteForm, isSubmitting, cx = "", tt = "", acti
                 const file = e.target.files[0];
                 setFileUrl(URL.createObjectURL(file));
                 const imgbb = await axios.post(
-                  "https://api.imgbb.com/1/upload?key=a07b4b5e0548a50248aecfb194645bac"
+                  "https://api.imgbb.com/1/upload?key=b87c5e978e571258132f0630cc1b1b78"
                 );
                 const url = imgbb?.data.data.url || null;
                 setUrl(url);

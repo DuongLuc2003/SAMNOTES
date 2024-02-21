@@ -95,45 +95,59 @@ export default function GuestCreateForm({ clear }) {
   const [error, setError] = useState('');
   const [isNoteCreated, setIsNoteCreated] = useState(false);
 
-  const createNote = async () => {
-    let params = {
-      color: colorBucket[color],
-      data,
-      dueAt:
-        typeof dueAt === "object" && dueAt ? dayjs(dueAt).format("DD/MM/YYYY hh:mm A Z") : dueAt,
-      remindAt:
-        typeof reminder === "object" && reminder
-          ? dayjs(reminder).format("DD/MM/YYYY hh:mm A Z")
-          : reminder,
-      lock,
-      notePublic: 1,
-      pinned,
-      share,
-      title,
-      type,
-      idFolder,
-      linkNoteShare
+    const createNote = async () => {
+      let params = {
+        color: colorBucket[color],
+        data,
+        dueAt:
+          typeof dueAt === "object" && dueAt ? dayjs(dueAt).format("DD/MM/YYYY hh:mm A Z") : dueAt,
+        remindAt:
+          typeof reminder === "object" && reminder
+            ? dayjs(reminder).format("DD/MM/YYYY hh:mm A Z")
+            : reminder,
+        lock,
+        notePublic: 1,
+        pinned,
+        share,
+        title,
+        type,
+        idFolder,
+        linkNoteShare
+      };
+      console.log("param: ", params)
+      if (type === "image") params = { ...params, metaData:localStorage.getItem('imageUrl')};
+      try {
+        const res = await noteApi.createNote(user.id, params);
+        console.log("this is createNote:", user.id)
+        const noteId = res.note.idNote;
+        const shareLink = `https://samnote.mangasocial.online/note/${noteId}`
+        setShareLink(shareLink);
+        enqueueSnackbar("Note was created successfully", { variant: "success" });
+        setIsNoteCreated(true);
+      } catch (err) {
+        console.log(err)
+        console.log("message: ", err.message)
+        setError(`Failed to create note: ${err.message}. Please try again.`);
+        enqueueSnackbar(`Error ${err.message}`);
+
+      }
     };
-
-    console.log("param: ", params)
-    if (type === "image") params = { ...params, metaData };
-
-    try {
-      const res = await noteApi.createNote(user.id, params);
-      console.log("this is createNote:", user.id)
-      const noteId = res.note.idNote;
-      const shareLink = `https://samnote.mangasocial.online/note/${noteId}`
-      setShareLink(shareLink);
-      enqueueSnackbar("Note was created successfully", { variant: "success" });
-      setIsNoteCreated(true);
-    } catch (err) {
-      console.log(err)
-      console.log("message: ", err.message)
-      setError(`Failed to create note: ${err.message}. Please try again.`);
-      enqueueSnackbar(`Error ${err.message}`);
-
-    }
-  };
+    
+    const imageUpload = async (e) => {
+      const files = e.target.files;
+      const formData = new FormData();
+      let imgbb = {};
+      if (files.length !== 0) {
+        formData.append("image", files[0]);
+        imgbb = await axios.post(
+          "https://api.imgbb.com/1/upload?key=a07b4b5e0548a50248aecfb194645bac",
+          formData
+        );
+      }
+      const url = imgbb?.data.data.url || null;
+      localStorage.setItem('imageUrl', url);
+      setMetaData(url);
+    };
 
 
   const handleShare = async () => {
@@ -168,21 +182,7 @@ export default function GuestCreateForm({ clear }) {
     }
   };
 
-  const imageUpload = async (e) => {
-    const files = e.target.files;
-    const formData = new FormData();
-    let imgbb = {};
-    if (files.length !== 0) {
-      formData.append("image", files[0]);
-
-      imgbb = await axios.post(
-        "https://api.imgbb.com/1/upload?key=a07b4b5e0548a50248aecfb194645bac",
-        formData
-      );
-    }
-    const url = imgbb?.data.data.url || null;
-    setMetaData(url);
-  };
+  
 
   return (
     <div
