@@ -203,7 +203,7 @@ function SideBar({ usergg, handleOpenDrawer, drawerNew }) {
                     marginRight: "1rem",
                   }}
                   src={
-                    usergg.picture ||
+                    usergg?.picture ||
                     "https://i.pinimg.com/736x/e0/7a/22/e07a22eafdb803f1f26bf60de2143f7b.jpg"
                   }
                 ></img>
@@ -223,7 +223,7 @@ function SideBar({ usergg, handleOpenDrawer, drawerNew }) {
                   className={classes.none}
                   primary={
                     <span style={{ fontWeight: 500, width: "200px", textTransform: "capitalize" }}>
-                      {usergg.name || "user"}
+                      {usergg?.name || "user"}
                     </span>
                   }
                 />
