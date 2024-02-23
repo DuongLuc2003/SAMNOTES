@@ -79,14 +79,10 @@ function ToolsNote({
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const clipboard = (e) => {
-    const isJWTExpired = checkJWT();
-
-    if (!isJWTExpired && dataItem && dataItem.idNote) {
+    if (dataItem && dataItem.idNote) {
         navigator.clipboard.writeText("https://samnotes.online/note/" + dataItem.idNote);
         enqueueSnackbar("Copied to Clipboard", { variant: "success" });
         handleClose();
-    } else {
-        console.log('JWT is expired or err idNote');
     }
 };
 

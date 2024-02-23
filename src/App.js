@@ -37,11 +37,10 @@ function App() {
           <Route path='/about/*' element={<Home />} />
           <Route path='/upload' element={<ImageUploader />} />
           <Route path='/group/:idGroup/*' element={<GroupDetail />} />
-          <Route path='/note/:noteId' element={<Note />} />
           <Route path="/message" element={<MessagePage />} />
           <Route path='/anonymous' element={<Anonymous />} />
         </Route>
-
+        <Route path='/note/:noteId' element={<Note />} />
         <Route path='/login' element={checkJWT() ? <AuthLayout /> : <Navigate to='/about' replace />} />
         <Route
           path='/register'

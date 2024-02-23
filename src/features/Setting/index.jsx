@@ -166,7 +166,7 @@ function Settings({ usergg, setDf_nav, setColorNote, setUser }) {
   const [editedName, setEditedName] = useState(user.name || usergg.name);
 
   const handleEditProfile = async () => {
-    if (checkJWT()) {
+    if (!checkJWT()) {
       return window.location.assign("/login");
     }
     const updatedData = {};
