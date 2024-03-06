@@ -62,8 +62,8 @@ function Profile_orther({ data, handleDelNote, setArchivedData, toolsNote }) {
       return result.data;
     };
     api_profile().then((data) => {
-      setOtherProfile(data.user);
-      setLimitedData(data.note.slice(2, startIndex));
+      setOtherProfile(data?.user);
+      setLimitedData(data?.note.slice(2, startIndex));
       // setUser(data.user);
       // setUserName(data.user.name);
       // setGmailUser(data.user.gmail);

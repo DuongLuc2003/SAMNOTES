@@ -39,7 +39,6 @@ function App() {
           <Route path='/group/:idGroup/*' element={<GroupDetail />} />
           <Route path="/message" element={<MessagePage />} />
           <Route path='/anonymous' element={<Anonymous />} />
-
         </Route>
         <Route path='/note/:noteId' element={<Note />} ></Route>
         <Route path='/login' element={checkJWT() ? <AuthLayout /> : <Navigate to='/about' replace />} />

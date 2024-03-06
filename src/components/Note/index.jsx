@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
-
+import { KeyboardArrowRight } from "@mui/icons-material";
 import {
   Box,
   Checkbox,
@@ -11,10 +11,11 @@ import {
   TextField,
   DialogActions,
   Typography,
-  Drawer
+  Drawer,
+  IconButton,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
-import { convertColor } from "../../constants";
+import { convertColor , checkJWT } from "../../constants";
 import { Header } from "antd/es/layout/layout";
 import noteApi from "../../api/noteApi";
 import userApi from "../../api/userApi";
@@ -26,7 +27,9 @@ const Note = () => {
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(null);
+  console.log(profile)
   const { noteId } = useParams();
+  console.log(noteId)
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const clipboard = (e) => {
@@ -50,7 +53,7 @@ const Note = () => {
           .then((response) => {
             const profileData = response.user;
             setProfile(profileData);
-            console.log(response);
+            console.log(response.user.user_Name);
           })
           .catch((error) => {
             console.log(error);
@@ -59,29 +62,98 @@ const Note = () => {
     });
   }, []);
 
-  const handleNoteForm = async (value) => {
+
+const handleNoteForm = async (value) => {
     
-  };
+};
+const backgroundColor = convertColor(data?.color);
+useEffect(() => {
+  if (data && data?.color) {
+      const convertedColor = convertColor(data?.color);
+      console.log("Converted color:", convertedColor);
+  }
+}, [data]);
 
   return (
     <>
       <SideBar />
-      {data && data && data.notePublic === 1 ? (
-        <div className={`flex-grow absolute top-0 right-0 p-[2%] overflow-auto w-[calc(100vw-250px)] h-full bg-[${convertColor(data.color)}]`}>
-          <div className="text-[20px] pb-2 border-b-2 border-black mb-5">{data.title}</div>
-          {data.type !== "checklist" ? (
-            <Box>{data.data}</Box>
-          ) : (
-            <Box>
-              {data.data.map((item, index) => {
-                <Box key={index}>
-                  <Checkbox disabled checked={item.status} />
-                  {item.content}
-                </Box>;
-              })}
+
+      {checkJWT() && data && data.notePublic === 1 ? (
+  // Hiển thị EditForm nếu không phải checkJWT và data là public
+  <div className="ml-40">
+    <div className="w-[calc(100vw-120px)]">
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "",
+        }}
+      >
+        <img
+          style={{
+            width: "70px",
+          }}
+          src="../../../assets/home-icon.png"
+          alt="homeicon"
+        />
+        <span
+          style={{
+            color: "#6A53CC",
+            fontSize: "30px",
+            fontWeight: 800,
+            marginLeft: "10px",
+          }}
+        >
+          Note Share
+        </span>
+      </Box>
+    </div>
+
+    <div
+      className={`rounded-lg absolute top-0 right-7 p-[2%] w-[calc(100vw-310px)] min-h-[calc(100vw-810px)] bg-[${backgroundColor}] mt-20`}
+    >
+      <div className="text-[20px] pb-2 border-b-2 border-black mb-5 font-bold">
+        {data.title}
+      </div>
+      {data.type !== "checklist" ? (
+        <Box sx={{ whiteSpace: "pre-wrap" }}>{data?.data}</Box>
+      ) : (
+        <Box>
+          {data?.data.map((item, index) => (
+            <Box key={index}>
+              <Checkbox disabled checked={item.status} />
+              {item.content}
             </Box>
-          )}
-          <Drawer
+          ))}
+        </Box>
+      )}
+      {data.type === "image" && (
+        <Box className="hihi">
+          <img
+            src={data.metaData}
+            alt=""
+            style={{ width: "100%", objectFit: "contain" }}
+          />
+        </Box>
+      )}
+      {data && profile && (
+        <div className="absolute bottom-0 right-0 mr-2 mb-2">
+          <Typography>
+            <span>Created By:</span>
+            <Link to={`/profile/${profile.id}`}>{profile.user_Name}</Link>
+          </Typography>
+
+          <Typography>
+            <span>Time:</span> {data.createAt}
+          </Typography>
+        </div>
+      )}
+    </div>
+  </div>
+) : !checkJWT() ? (
+
+<Drawer
       // variant='persistent'
       className='box-container'
       id='wapperEditNote'
@@ -119,50 +191,24 @@ const Note = () => {
             dataItem={""}
           /> */}
     </Drawer>
-          
-          
-          {data.type === "image" && (
-            <Box>
-              <img src={data.metaData} alt='' style={{ width: "100%", objectFit: "contain" }} />
-            </Box>
-          )}
+) : (
 
-          {/* <Button sx={{ marginTop: "30px" }} variant='contained' onClick={handleClickOpen}>
-            Share
-          </Button>
-          <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Share</DialogTitle>
-            <DialogContent>
-              <TextField
-                id='name'
-                type='text'
-                fullWidth
-                variant='standard'
-                disabled
-                value={"http://123.24.166.24:18011/note/" + noteId}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={clipboard}> COPY URL</Button>
-            </DialogActions>
-          </Dialog> */}
-        </div>
-      ) : (
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "50%",
-            height: "50%",
-            padding: "12px",
-            fontSize: "60px",
-          }}
-        >
-          Private
-        </Box>
-      )}
+  <Box
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "50%",
+      height: "50%",
+      padding: "12px",
+      fontSize: "60px",
+    }}
+  >
+    Private
+  </Box>
+)}
+
       
     </>
   );

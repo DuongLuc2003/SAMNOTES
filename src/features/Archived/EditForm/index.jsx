@@ -12,6 +12,7 @@ import TextFieldBox from "../../../components/FieldNote/TextFieldBox";
 import ImageFieldBox from "../../../components/FieldNote/ImageFieldBox";
 import ToolsNote from "../../../components/ToolsNote";
 import "./EditForm.css";
+
 EditForm.propTypes = {
   dataItem: PropTypes.object.isRequired,
   handleDelNote: PropTypes.func.isRequired,
@@ -42,16 +43,16 @@ export default function EditForm({
   const [currentDateTime, setCurrentDateTime] = useState("");
   const [drawerEdit, setDrawerEdit] = useState(false);
   const [pinned, setPinned] = useState(() => dataItem ? dataItem.pinned : false);
-  const [data, setData] = useState(getList(dataItem.data, dataItem.type));
-  const [colorNote, setColorNote] = useState(dataItem.color);
+  const [data, setData] = useState(getList(dataItem?.data, dataItem?.type));
+  const [colorNote, setColorNote] = useState(dataItem?.color);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [options, setOptions] = useState({
-    dueAt: typeof dataItem.dueAt !== "object" ? dayjs(dataItem.dueAt) : dataItem.dueAt,
-    remindAt: typeof dataItem.remindAt !== "object" ? dayjs(dataItem.remindAt) : dataItem.remindAt,
-    lock: dataItem.lock,
-    share: dataItem.share,
-    notePublic: dataItem.notePublic,
+    dueAt: typeof dataItem?.dueAt !== "object" ? dayjs(dataItem?.dueAt) : dataItem?.dueAt,
+    remindAt: typeof dataItem?.remindAt !== "object" ? dayjs(dataItem?.remindAt) : dataItem?.remindAt,
+    lock: dataItem?.lock,
+    share: dataItem?.share,
+    notePublic: dataItem?.notePublic,
   });
   //pined
   const handlePined = () => {
@@ -209,7 +210,7 @@ console.log(res);
                 }
               })
             : null}
-          {dataItem.type === "text" && (
+          {dataItem?.type === "text" && (
             <TextFieldBox
               isSubmitting={isSubmitting}
               handleNoteForm={handleNoteForm}
@@ -220,22 +221,22 @@ console.log(res);
               type={"2"}
             />
           )}
-          {dataItem.type === "checklist" && (
+          {dataItem?.type === "checklist" && (
             <CheckListBox
               isSubmitting={isSubmitting}
               handleNoteForm={handleNoteForm}
-              bg={colorNote}
+              bg={colorNote || {}}
               action='Edit'
               list={data}
               tt={dataItem.title}
               type={"2"}
             />
           )}
-          {dataItem.type === "image" && (
+          {dataItem?.type === "image" && (
             <ImageFieldBox
               isSubmitting={isSubmitting}
               handleNoteForm={handleNoteForm}
-              bg={colorNote}
+              bg={colorNote || {}}
               action='Edit'
               cx={dataItem.data}
               src={dataItem.metaData}

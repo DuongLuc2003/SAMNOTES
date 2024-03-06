@@ -15,7 +15,7 @@ import { profileUser } from "../../features/Auth/userSlice";
 import { checkJWT } from "../../constants";
 import ListView from "../Archived/ListView/index";
 import ListNoteRender from "src/components/OtherProfile/ListNoteRender";
-import { FaCamera } from "react-icons/fa6";
+import { FaCamera } from "react-icons/fa";
 function Profile({ usergg, data, handleDelNote, setArchivedData, toolsNote }) {
 	const theme = createTheme({
 		components: {
